@@ -13,6 +13,7 @@ Following test scenarios are automated -
 - Login request without proper headers.
 
 ## Test Execution -
+### There are three ways in which you can execute the functional tests -
 - Method 1 - Execute 'mvn clean test -DTEST_ENV=dev' or 'mvn clean test' from Terminal.
 - Method 2 - Execute 'testng-regression' from IDE.
 - Method 3 - Execute the FunctionalTest class directly from IDE. 
