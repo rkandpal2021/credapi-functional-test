@@ -1,6 +1,6 @@
-#This repository contains the functional test for the login API.
+# This repository contains the functional test for the login API.
 
-##Test Scenarios -
+## Test Scenarios -
 Following test scenarios are automated -
 - Valid login with correct username, password and recaptchaToken.
 - Valid login with only username and password.
