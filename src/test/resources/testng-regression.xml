@@ -1,0 +1,9 @@
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd" >
+
+<suite name="Regression Test Suite" parallel="methods" thread-count="2">
+    <test name="Regression Test">
+        <classes>
+            <class name="com.upgrade.credapi.test.regression.FunctionalTest"/>
+        </classes>
+    </test>
+</suite>

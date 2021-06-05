@@ -1,0 +1,44 @@
+{
+  "firstName": "Ian",
+  "userId": 9114917,
+  "userUuid": "34c16f53-38c4-461a-bd14-11fa748d2663",
+  "authenticationLevel": "FULL",
+  "actorIds": [
+    9096778
+  ],
+  "loanApplications": [
+    {
+      "id": 100154933,
+      "uuid": "19458dac-dcbb-4e40-bc92-d6939071912d",
+      "status": "EXPIRED",
+      "productType": "DEPOSIT",
+      "sourceSystem": "BORROWER_FUNNEL_V2",
+      "purpose": null,
+      "createDate": "2021-01-18T23:39:09.027Z",
+      "offerAmount": null,
+      "initiator": "ACTOR"
+    }
+  ],
+  "loansInReview": [
+    {
+      "id": 9545966,
+      "uuid": "230ea84a-7199-41c9-bf38-fff27e35970d",
+      "status": "WITHDRAWN",
+      "productType": "PERSONAL_LOAN",
+      "collateralDistributionType": null,
+      "hasOpenBackendCounter": false,
+      "purpose": "CREDIT_CARD",
+      "createDate": "2019-08-21T18:18:59.959Z",
+      "postIssuanceStatus": null,
+      "addon": null
+    }
+  ],
+  "loanAccountSummaryAto": [
+    {
+      "loanAccountNumber": null,
+      "postIssuanceLoanStatus": null,
+      "daysPastDue": 0,
+      "loanProductType": null
+    }
+  ]
+}
