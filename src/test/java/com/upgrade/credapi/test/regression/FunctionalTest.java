@@ -20,7 +20,7 @@ public class FunctionalTest extends TestBase {
     private static Logger logger = LoggerFactory.getLogger(FunctionalTest.class);
     private static final String testDataFolderPath = Constants.FUNCTIONAL_TEST_DATA_PATH + File.separator;
 
-    //NOTE: we cannot use parallel = true if we want to run all the test together.
+    //NOTE: we can use parallel = true if we want to run all the test together.
     @DataProvider(name = "loginTestData")
     public Object[][] loginTestData() {
         return new Object[][]{
