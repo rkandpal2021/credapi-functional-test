@@ -19,7 +19,7 @@ Following test scenarios are automated -
 - Method 3 - Execute the FunctionalTest class directly from IDE. 
 
 ## Automation Code Implementation
-### All the Functional Tests are implemented in following two ways [i.e every functional test has been implemented twice]
+### All the Functional Tests have been implemented in following two ways -
 - FunctionalTestUsingJSONAssert - This is the recommended approach. In these tests we are using JSONAssert library to compare two JSON. This library compares every single field of JSON thus all fields get tested.
 - FunctionalTestWithoutJSONAssert - In this approach we have developed methods to assert JSON fields. Here we are not using JSONAssert library for comparing JSON.
 
