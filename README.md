@@ -18,10 +18,10 @@ Following test scenarios are automated -
 - Method 2 - Execute 'testng-regression' from IDE.
 - Method 3 - Execute the FunctionalTest class directly from IDE. 
 
-## Automation Code Implementation
+## Implementation Approach
 ### All the Functional Tests have been implemented in following two ways -
-- FunctionalTestUsingJSONAssert - This is the recommended approach. In these tests we are using JSONAssert library to compare two JSON. This library compares every single field of JSON thus all fields get tested.
-- FunctionalTestWithoutJSONAssert - In this approach we have developed methods to assert JSON fields. Here we are not using JSONAssert library for comparing JSON.
+- Approach 1 (FunctionalTestUsingJSONAssert) - This is the recommended approach. In these tests we are using JSONAssert library to compare two JSON. This library compares every single field of JSON thus all fields get tested.
+- Approach 2 (FunctionalTestWithoutJSONAssert) - In this approach we have developed methods to assert JSON fields. Here we are not using JSONAssert library for comparing JSON.
 
 ### Test Data -
 All the test data (request payload & expected response payload) is stored as JSON file under "functional-test-data" folder.
