@@ -9,7 +9,24 @@ public interface Constants {
     String CORR_ID_HEADER = "x-cf-corr-id";
     String CREDAPI_BASE_URI = "credapiBaseUri";
     String SOURCE_ID_HEADER_VALUE = "coding-challenge";
-    String FUNCTIONAL_TEST_DATA_PATH = "functional-test-data";
+    String FUNCTIONAL_TEST_DATA_PATH = "functional-test-data/";
     String Login_API = "/api/brportorch/v2/login";
     String TIMESTAMP_FIELD_NAME = "timestamp";
+    String ERROR = "error";
+    String CODE = "code";
+    String CODE_NAME = "codeName";
+    String MESSAGE = "message";
+    String RETRYABLE = "retryable";
+    String TYPE = "type";
+    String HTTP_STATUS = "httpStatus";
+    String FIRST_NAME = "firstName";
+    String USERID = "userId";
+    String USER_UUID = "userUuid";
+    String AUTHENTICATION_LEVEL = "authenticationLevel";
+    String LOANS_IN_REVIEW = "loansInReview";
+    String LOANS_IN_REVIEW_MISMATCH_ERROR = "loansInReview json array is not matching.";
+    String LOAN_APPLICATIONS = "loanApplications";
+    String LOAN_APPLICATIONS_MISMATCH_ERROR = "loansApplications json array is not matching.";
+    String LOAN_ACCOUNT_SUMMARY_ATO = "loanAccountSummaryAto";
+    String LOAN_ACCOUNT_SUMMARY_ATO_MISMATCH_ERROR = "loanAccountSummaryAto json array is not matching.";
 }

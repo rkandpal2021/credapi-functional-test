@@ -4,13 +4,8 @@ import com.upgrade.credapi.test.base.Constants;
 import com.upgrade.credapi.test.base.TestBase;
 import io.restassured.builder.RequestSpecBuilder;
 import io.restassured.http.ContentType;
-import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
 import org.json.JSONException;
-import org.skyscreamer.jsonassert.Customization;
-import org.skyscreamer.jsonassert.JSONAssert;
-import org.skyscreamer.jsonassert.JSONCompareMode;
-import org.skyscreamer.jsonassert.comparator.CustomComparator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.testng.annotations.DataProvider;
@@ -21,10 +16,13 @@ import java.io.IOException;
 
 import static io.restassured.RestAssured.given;
 import static org.testng.Assert.assertEquals;
+import io.restassured.path.json.JsonPath;
 
-public class FunctionalTest extends TestBase {
-    private static Logger logger = LoggerFactory.getLogger(FunctionalTest.class);
-    private static final String testDataFolderPath = Constants.FUNCTIONAL_TEST_DATA_PATH + File.separator;
+public class FunctionalTestWithoutJSONAssert extends TestBase {
+    private static Logger logger = LoggerFactory.getLogger(FunctionalTestWithoutJSONAssert.class);
+    private static final String testDataFolderPath = Constants.FUNCTIONAL_TEST_DATA_PATH;
+    private static final String folderPath = "./src/test/resources/" + testDataFolderPath;
+
 
     //NOTE: we can use parallel = true if we want to run all the test together.
     @DataProvider(name = "loginTestData")
@@ -88,14 +86,28 @@ public class FunctionalTest extends TestBase {
      */
     private void test(RequestSpecification requestSpecification, String requestBody, String expectedResponsePayload, int responseCode) throws IOException, JSONException {
         String requestPayload = readPayloadFromFile(testDataFolderPath + requestBody);
-        Response response = given().spec(requestSpecification).body(requestPayload).post(Constants.Login_API).then()
-                .contentType(ContentType.JSON).extract().response();;
-        //compare response code
-        assertEquals(response.getStatusCode(), responseCode);
-        String expectedPayload = readPayloadFromFile(testDataFolderPath + expectedResponsePayload);
-        //compare the response payload using JSONAssert
-        JSONAssert.assertEquals(expectedPayload, response.asString(), new CustomComparator(JSONCompareMode.STRICT,
-                new Customization(Constants.TIMESTAMP_FIELD_NAME, (o1, o2) -> true)
-        ));
+        JsonPath expectedApiResponse = new JsonPath(new File(folderPath + expectedResponsePayload));
+        //submit the request and assert the response.
+        JsonPath actualApiResponse = given().spec(requestSpecification).body(requestPayload).post(Constants.Login_API).then()
+                .contentType(ContentType.JSON).statusCode(responseCode).extract().body().jsonPath();;
+        //assert the response
+        if(responseCode==200){
+            assertEquals(actualApiResponse.getString(Constants.FIRST_NAME), expectedApiResponse.getString(Constants.FIRST_NAME));
+            assertEquals(actualApiResponse.getString(Constants.USERID), expectedApiResponse.getString(Constants.USERID));
+            assertEquals(actualApiResponse.getString(Constants.USER_UUID), expectedApiResponse.getString(Constants.USER_UUID));
+            assertEquals(actualApiResponse.getString(Constants.AUTHENTICATION_LEVEL), expectedApiResponse.getString(Constants.AUTHENTICATION_LEVEL));
+            assertJSONArray(actualApiResponse, expectedApiResponse, Constants.LOAN_APPLICATIONS, Constants.LOAN_APPLICATIONS_MISMATCH_ERROR);
+            assertJSONArray(actualApiResponse, expectedApiResponse, Constants.LOANS_IN_REVIEW, Constants.LOANS_IN_REVIEW_MISMATCH_ERROR);
+            assertJSONArray(actualApiResponse, expectedApiResponse, Constants.LOAN_ACCOUNT_SUMMARY_ATO, Constants.LOAN_ACCOUNT_SUMMARY_ATO_MISMATCH_ERROR);
+        }
+        else{
+            assertEquals(actualApiResponse.getString(Constants.CODE), expectedApiResponse.getString(Constants.CODE));
+            assertEquals(actualApiResponse.getString(Constants.CODE_NAME), expectedApiResponse.getString(Constants.CODE_NAME));
+            assertEquals(actualApiResponse.getString(Constants.MESSAGE), expectedApiResponse.getString(Constants.MESSAGE));
+            assertEquals(actualApiResponse.getString(Constants.ERROR), expectedApiResponse.getString(Constants.ERROR));
+            assertEquals(actualApiResponse.getString(Constants.RETRYABLE), expectedApiResponse.getString(Constants.RETRYABLE));
+            assertEquals(actualApiResponse.getString(Constants.TYPE), expectedApiResponse.getString(Constants.TYPE));
+            assertEquals(actualApiResponse.getString(Constants.HTTP_STATUS), expectedApiResponse.getString(Constants.HTTP_STATUS));
+        }
     }
 }

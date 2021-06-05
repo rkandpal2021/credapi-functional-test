@@ -3,7 +3,8 @@
 <suite name="Regression Test Suite" parallel="methods" thread-count="2">
     <test name="Regression Test">
         <classes>
-            <class name="com.upgrade.credapi.test.regression.FunctionalTest"/>
+            <class name="com.upgrade.credapi.test.regression.FunctionalTestUsingJSONAssert"/>
+            <class name="com.upgrade.credapi.test.regression.FunctionalTestWithoutJSONAssert"/>
         </classes>
     </test>
 </suite>

@@ -2,6 +2,7 @@ package com.upgrade.credapi.test.base;
 
 import io.restassured.builder.RequestSpecBuilder;
 import io.restassured.http.ContentType;
+import io.restassured.path.json.JsonPath;
 import io.restassured.specification.RequestSpecification;
 import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
@@ -10,8 +11,12 @@ import org.testng.annotations.BeforeSuite;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.List;
+import java.util.Map;
 import java.util.Properties;
 import java.util.UUID;
+
+import static org.testng.Assert.assertTrue;
 
 /**
  * This base class holds all the test code to be used across testing various end points (scenarios).
@@ -35,7 +40,7 @@ public class TestBase {
         if (environment == null) {
             environment = Constants.DEFAULT_TEST_ENV;
         }
-        logger.info("Test env = {}", environment);
+        logger.info("Test Env = {}", environment);
 
         //load properties from corresponding environment
         testProperties = new Properties();
@@ -66,4 +71,20 @@ public class TestBase {
         return IOUtils.toString(inputStream);
     }
 
+    /**
+     * Compare two JSONArray.
+     * @param actualApiResponse
+     * @param expectedApiResponse
+     * @param jsonPath
+     * @param errorMessage
+     */
+    protected void assertJSONArray(JsonPath actualApiResponse, JsonPath expectedApiResponse, String jsonPath, String errorMessage) {
+        List<Map<String, String>> actualLoansInReview = actualApiResponse.get(jsonPath);
+        List<Map<String, String>> expectedLoansInReview = expectedApiResponse.get(jsonPath);
+        boolean loansInReviewComparison = actualLoansInReview.get(0).equals(expectedLoansInReview.get(0));
+        if(!loansInReviewComparison){
+            logger.info("actualJSON={}, expectedJSON={}", actualLoansInReview.get(0), expectedLoansInReview.get(0));
+        }
+        assertTrue(loansInReviewComparison, errorMessage);
+    }
 }
