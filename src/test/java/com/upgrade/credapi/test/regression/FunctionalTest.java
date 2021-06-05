@@ -4,8 +4,13 @@ import com.upgrade.credapi.test.base.Constants;
 import com.upgrade.credapi.test.base.TestBase;
 import io.restassured.builder.RequestSpecBuilder;
 import io.restassured.http.ContentType;
+import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
 import org.json.JSONException;
+import org.skyscreamer.jsonassert.Customization;
+import org.skyscreamer.jsonassert.JSONAssert;
+import org.skyscreamer.jsonassert.JSONCompareMode;
+import org.skyscreamer.jsonassert.comparator.CustomComparator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.testng.annotations.DataProvider;
@@ -13,6 +18,9 @@ import org.testng.annotations.Test;
 
 import java.io.File;
 import java.io.IOException;
+
+import static io.restassured.RestAssured.given;
+import static org.testng.Assert.assertEquals;
 
 public class FunctionalTest extends TestBase {
     private static Logger logger = LoggerFactory.getLogger(FunctionalTest.class);
@@ -54,7 +62,7 @@ public class FunctionalTest extends TestBase {
      */
     @Test(dataProvider = "loginTestData")
     public void testLogin(String requestBody, String expectedResponsePayload, int responseCode) throws IOException, JSONException {
-        test(credapiRequestSpec, testDataFolderPath + requestBody, testDataFolderPath + expectedResponsePayload, responseCode);
+        test(credapiRequestSpec, requestBody, expectedResponsePayload, responseCode);
     }
 
     /**
@@ -66,6 +74,28 @@ public class FunctionalTest extends TestBase {
                 .setBaseUri(testProperties.getProperty(Constants.CREDAPI_BASE_URI))
                 .setContentType(ContentType.JSON)
                 .build();
-        test(requestSpecification, testDataFolderPath + requestBody, testDataFolderPath + expectedResponsePayload, responseCode);
+        test(requestSpecification, requestBody, expectedResponsePayload, responseCode);
+    }
+
+    /**
+     * This method is called internally by functional test to submit a Login API request and validate it's response.
+     * @param requestSpecification
+     * @param requestBody
+     * @param expectedResponsePayload
+     * @param responseCode
+     * @throws IOException   when request or response file does not exists.
+     * @throws JSONException this exception is throw when either expected payload file or server response is not proper json.
+     */
+    private void test(RequestSpecification requestSpecification, String requestBody, String expectedResponsePayload, int responseCode) throws IOException, JSONException {
+        String requestPayload = readPayloadFromFile(testDataFolderPath + requestBody);
+        Response response = given().spec(requestSpecification).body(requestPayload).post(Constants.Login_API).then()
+                .contentType(ContentType.JSON).extract().response();;
+        //compare response code
+        assertEquals(response.getStatusCode(), responseCode);
+        String expectedPayload = readPayloadFromFile(testDataFolderPath + expectedResponsePayload);
+        //compare the response payload using JSONAssert
+        JSONAssert.assertEquals(expectedPayload, response.asString(), new CustomComparator(JSONCompareMode.STRICT,
+                new Customization(Constants.TIMESTAMP_FIELD_NAME, (o1, o2) -> true)
+        ));
     }
 }
