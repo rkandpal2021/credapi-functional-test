@@ -14,7 +14,7 @@ import java.util.Properties;
 import java.util.UUID;
 
 /**
- * This com.upgrade.credapi.test.base class holds all the test code to be used across testing various end points (scenarios).
+ * This base class holds all the test code to be used across testing various end points (scenarios).
  */
 public class TestBase {
     private static Logger logger = LoggerFactory.getLogger(TestBase.class);
