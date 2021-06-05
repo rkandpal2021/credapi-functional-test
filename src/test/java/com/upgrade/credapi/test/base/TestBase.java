@@ -79,12 +79,13 @@ public class TestBase {
      * @param errorMessage
      */
     protected void assertJSONArray(JsonPath actualApiResponse, JsonPath expectedApiResponse, String jsonPath, String errorMessage) {
-        List<Map<String, String>> actualLoansInReview = actualApiResponse.get(jsonPath);
-        List<Map<String, String>> expectedLoansInReview = expectedApiResponse.get(jsonPath);
-        boolean jsonArrayComparison = actualLoansInReview.get(0).equals(expectedLoansInReview.get(0));
+        List<Map<String, String>> actualJSONArray = actualApiResponse.get(jsonPath);
+        List<Map<String, String>> expectedJSONArray = expectedApiResponse.get(jsonPath);
+        boolean jsonArrayComparison = actualJSONArray.get(0).equals(expectedJSONArray.get(0));
         if(!jsonArrayComparison){
-            logger.info("actualJSON={}, expectedJSON={}", actualLoansInReview.get(0), expectedLoansInReview.get(0));
+            logger.info("actualJSON={}, expectedJSON={}", actualJSONArray.get(0), expectedJSONArray.get(0));
         }
         assertTrue(jsonArrayComparison, errorMessage);
     }
 }
+

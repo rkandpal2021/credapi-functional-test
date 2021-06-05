@@ -24,4 +24,12 @@ Following test scenarios are automated -
 - Approach 2 (FunctionalTestWithoutJSONAssert) - In this approach we have developed methods to assert JSON fields. Here we are not using JSONAssert library for comparing JSON.
 
 ### Test Data -
-All the test data (request payload & expected response payload) is stored as JSON file under "functional-test-data" folder.
+- All the test data (request payload & expected response payload) is stored as JSON file under "functional-test-data" folder.
+
+### Environment Specific property file -
+- Each environment has a specific property file. This file contains all the environment specific properties like Base URI.
+
+### Parallel test execution -
+- Currently, two tests are getting parallelly execute. This can be changed by updating the "thread-count" in the testng-regression.xml.
+- We can also enable the parallel execution of data driven test by adding parallel=true to DataProvider.
+

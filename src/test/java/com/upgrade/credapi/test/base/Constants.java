@@ -10,7 +10,7 @@ public interface Constants {
     String CREDAPI_BASE_URI = "credapiBaseUri";
     String SOURCE_ID_HEADER_VALUE = "coding-challenge";
     String FUNCTIONAL_TEST_DATA_PATH = "functional-test-data/";
-    String FOLDER_PATH = "./src/test/resources/" + Constants.FUNCTIONAL_TEST_DATA_PATH;
+    String FOLDER_PATH = "./src/test/resources/" + FUNCTIONAL_TEST_DATA_PATH;
     String Login_API = "/api/brportorch/v2/login";
     String TIMESTAMP_FIELD_NAME = "timestamp";
     String ERROR = "error";

@@ -20,7 +20,6 @@ import static io.restassured.RestAssured.given;
 
 public class FunctionalTestUsingJSONAssert extends TestBase {
 
-    //NOTE: we can use parallel = true if we want to run all the test together.
     @DataProvider(name = "loginTestData")
     public Object[][] loginTestData() {
         return new Object[][]{

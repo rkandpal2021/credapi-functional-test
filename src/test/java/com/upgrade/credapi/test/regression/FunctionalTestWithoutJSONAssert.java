@@ -18,7 +18,6 @@ import io.restassured.path.json.JsonPath;
 
 public class FunctionalTestWithoutJSONAssert extends TestBase {
 
-    //NOTE: we can use parallel = true if we want to run all the test together.
     @DataProvider(name = "loginTestData")
     public Object[][] loginTestData() {
         return new Object[][]{
