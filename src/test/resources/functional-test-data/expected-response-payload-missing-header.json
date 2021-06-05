@@ -1,0 +1,7 @@
+{
+  "timestamp": "2021-06-05T11:57:27.161Z",
+  "status": 500,
+  "error": "Internal Server Error",
+  "message": "",
+  "path": "/api/brportorch/v2/login"
+}

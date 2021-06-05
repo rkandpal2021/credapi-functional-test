@@ -2,16 +2,14 @@ package com.upgrade.credapi.test.regression;
 
 import com.upgrade.credapi.test.base.Constants;
 import com.upgrade.credapi.test.base.TestBase;
-import io.restassured.response.Response;
+import io.restassured.builder.RequestSpecBuilder;
+import io.restassured.http.ContentType;
+import io.restassured.specification.RequestSpecification;
 import org.json.JSONException;
-import org.skyscreamer.jsonassert.JSONAssert;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
-
-import static io.restassured.RestAssured.given;
-import static org.testng.Assert.assertEquals;
 
 import java.io.File;
 import java.io.IOException;
@@ -35,6 +33,14 @@ public class FunctionalTest extends TestBase {
         };
     }
 
+    @DataProvider(name = "missingHeaderTestData")
+    public Object[][] missingHeaderTestData() {
+        return new Object[][]{
+                {"valid-login-payload.json", "expected-response-payload-missing-header.json", 500}
+        };
+    }
+
+
     /**
      * Following test scenarios are automated -
      * - valid login with correct username, password and recaptchaToken.
@@ -48,13 +54,18 @@ public class FunctionalTest extends TestBase {
      */
     @Test(dataProvider = "loginTestData")
     public void testLogin(String requestBody, String expectedResponsePayload, int responseCode) throws IOException, JSONException {
-        String requestPayload = readPayloadFromFile(testDataFolderPath + requestBody);
-        Response response = given().spec(credapiRequestSpec).body(requestPayload).post(Constants.Login_API);
-        //compare response code
-        assertEquals(response.getStatusCode(), responseCode);
-        String expectedPayload = readPayloadFromFile(testDataFolderPath + expectedResponsePayload);
-        //compare the response payload using JSONAssert
-        JSONAssert.assertEquals(expectedPayload, response.asString(), true);
+        test(credapiRequestSpec, testDataFolderPath + requestBody, testDataFolderPath + expectedResponsePayload, responseCode);
     }
 
+    /**
+     * Login request without proper headers should get rejected. This test is to simulate this scenario.
+     */
+    @Test(dataProvider = "missingHeaderTestData")
+    public void missingHeaderTest(String requestBody, String expectedResponsePayload, int responseCode) throws IOException, JSONException {
+        RequestSpecification requestSpecification = new RequestSpecBuilder()
+                .setBaseUri(testProperties.getProperty(Constants.CREDAPI_BASE_URI))
+                .setContentType(ContentType.JSON)
+                .build();
+        test(requestSpecification, testDataFolderPath + requestBody, testDataFolderPath + expectedResponsePayload, responseCode);
+    }
 }

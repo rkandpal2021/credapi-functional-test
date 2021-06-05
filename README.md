@@ -10,8 +10,9 @@ Following test scenarios are automated -
 - Login attempt with missing password. 
 - Login attempt with a payload containing multiple username.
 - Login attempt with a bad username(' or ''=').
+- Login request without proper headers.
 
 ## Test Execution -
-- Method 1 - Execute 'mvn clean test' from Terminal.
+- Method 1 - Execute 'mvn clean test -DTEST_ENV=dev' or 'mvn clean test' from Terminal.
 - Method 2 - Execute 'testng-regression' from IDE.
 - Method 3 - Execute the FunctionalTest class directly from IDE. 
