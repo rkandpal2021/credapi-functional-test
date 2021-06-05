@@ -11,19 +11,14 @@ import org.skyscreamer.jsonassert.Customization;
 import org.skyscreamer.jsonassert.JSONAssert;
 import org.skyscreamer.jsonassert.JSONCompareMode;
 import org.skyscreamer.jsonassert.comparator.CustomComparator;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 import java.io.IOException;
 
 import static io.restassured.RestAssured.given;
-import static org.testng.Assert.assertEquals;
 
 public class FunctionalTestUsingJSONAssert extends TestBase {
-    private static Logger logger = LoggerFactory.getLogger(FunctionalTestUsingJSONAssert.class);
-    private static final String testDataFolderPath = Constants.FUNCTIONAL_TEST_DATA_PATH;
 
     //NOTE: we can use parallel = true if we want to run all the test together.
     @DataProvider(name = "loginTestData")
@@ -82,14 +77,14 @@ public class FunctionalTestUsingJSONAssert extends TestBase {
      * @param requestBody
      * @param expectedResponsePayload
      * @param responseCode
-     * @throws IOException   when request or response file does not exists.
-     * @throws JSONException this exception is throw when either expected payload file or server response is not proper json.
+     * @throws IOException   when request or response file does not exist.
+     * @throws JSONException this exception is thrown when either expected payload file or server response is not proper json.
      */
     private void test(RequestSpecification requestSpecification, String requestBody, String expectedResponsePayload, int responseCode) throws IOException, JSONException {
-        String requestPayload = readPayloadFromFile(testDataFolderPath + requestBody);
+        String requestPayload = readPayloadFromFile(Constants.FUNCTIONAL_TEST_DATA_PATH + requestBody);
         Response response = given().spec(requestSpecification).body(requestPayload).post(Constants.Login_API).then()
                 .contentType(ContentType.JSON).statusCode(responseCode).extract().response();
-        String expectedPayload = readPayloadFromFile(testDataFolderPath + expectedResponsePayload);
+        String expectedPayload = readPayloadFromFile(Constants.FUNCTIONAL_TEST_DATA_PATH + expectedResponsePayload);
         //compare the response payload using JSONAssert
         JSONAssert.assertEquals(expectedPayload, response.asString(), new CustomComparator(JSONCompareMode.STRICT,
                 new Customization(Constants.TIMESTAMP_FIELD_NAME, (o1, o2) -> true)

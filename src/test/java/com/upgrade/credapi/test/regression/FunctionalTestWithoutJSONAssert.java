@@ -6,8 +6,6 @@ import io.restassured.builder.RequestSpecBuilder;
 import io.restassured.http.ContentType;
 import io.restassured.specification.RequestSpecification;
 import org.json.JSONException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
@@ -19,10 +17,6 @@ import static org.testng.Assert.assertEquals;
 import io.restassured.path.json.JsonPath;
 
 public class FunctionalTestWithoutJSONAssert extends TestBase {
-    private static Logger logger = LoggerFactory.getLogger(FunctionalTestWithoutJSONAssert.class);
-    private static final String testDataFolderPath = Constants.FUNCTIONAL_TEST_DATA_PATH;
-    private static final String folderPath = "./src/test/resources/" + testDataFolderPath;
-
 
     //NOTE: we can use parallel = true if we want to run all the test together.
     @DataProvider(name = "loginTestData")
@@ -81,12 +75,12 @@ public class FunctionalTestWithoutJSONAssert extends TestBase {
      * @param requestBody
      * @param expectedResponsePayload
      * @param responseCode
-     * @throws IOException   when request or response file does not exists.
-     * @throws JSONException this exception is throw when either expected payload file or server response is not proper json.
+     * @throws IOException   when request or response file does not exist.
+     * @throws JSONException this exception is thrown when either expected payload file or server response is not proper json.
      */
     private void test(RequestSpecification requestSpecification, String requestBody, String expectedResponsePayload, int responseCode) throws IOException, JSONException {
-        String requestPayload = readPayloadFromFile(testDataFolderPath + requestBody);
-        JsonPath expectedApiResponse = new JsonPath(new File(folderPath + expectedResponsePayload));
+        String requestPayload = readPayloadFromFile(Constants.FUNCTIONAL_TEST_DATA_PATH + requestBody);
+        JsonPath expectedApiResponse = new JsonPath(new File(Constants.FOLDER_PATH + expectedResponsePayload));
         //submit the request and assert the response.
         JsonPath actualApiResponse = given().spec(requestSpecification).body(requestPayload).post(Constants.Login_API).then()
                 .contentType(ContentType.JSON).statusCode(responseCode).extract().body().jsonPath();;

@@ -22,7 +22,7 @@ import static org.testng.Assert.assertTrue;
  * This base class holds all the test code to be used across testing various end points (scenarios).
  */
 public class TestBase {
-    private static Logger logger = LoggerFactory.getLogger(TestBase.class);
+    private static final Logger logger = LoggerFactory.getLogger(TestBase.class);
     protected static String environment;
     protected static Properties testProperties;
     protected static RequestSpecification credapiRequestSpec;
