@@ -77,7 +77,7 @@ public class TestBase {
     protected String readPayloadFromFile(String fileName) throws Exception {
         InputStream inputStream = Thread.currentThread().getContextClassLoader().getResourceAsStream(fileName);
         if(inputStream==null){
-            throw new Exception("file " + fileName + " do not exists.");
+            throw new Exception("file " + fileName + " do not exist.");
         }
         String payload = IOUtils.toString(inputStream);
         inputStream.close();
