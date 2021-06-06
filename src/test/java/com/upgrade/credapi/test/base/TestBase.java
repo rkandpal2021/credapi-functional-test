@@ -9,6 +9,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.testng.annotations.BeforeSuite;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
@@ -74,10 +75,10 @@ public class TestBase {
      * @return
      * @throws Exception throws exception when the file is not found.
      */
-    protected String readPayloadFromFile(String fileName) throws Exception {
+    protected String readPayloadFromFile(String fileName) throws IOException {
         InputStream inputStream = Thread.currentThread().getContextClassLoader().getResourceAsStream(fileName);
         if(inputStream==null){
-            throw new Exception("file " + fileName + " do not exist.");
+            throw new FileNotFoundException("file " + fileName + " do not exist.");
         }
         String payload = IOUtils.toString(inputStream);
         inputStream.close();

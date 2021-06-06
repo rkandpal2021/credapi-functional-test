@@ -53,7 +53,7 @@ public class FunctionalTestUsingJSONAssert extends TestBase {
      * - login attempt with a bad username(' or ''=').
      */
     @Test(dataProvider = "loginTestData")
-    public void testLogin(String requestBody, String expectedResponsePayload, int responseCode) throws Exception {
+    public void testLogin(String requestBody, String expectedResponsePayload, int responseCode) throws IOException, JSONException {
         test(credapiRequestSpec, requestBody, expectedResponsePayload, responseCode);
     }
 
@@ -61,7 +61,7 @@ public class FunctionalTestUsingJSONAssert extends TestBase {
      * Login request without proper headers should get rejected. This test is to simulate this scenario.
      */
     @Test(dataProvider = "missingHeaderTestData")
-    public void missingHeaderTest(String requestBody, String expectedResponsePayload, int responseCode) throws Exception {
+    public void missingHeaderTest(String requestBody, String expectedResponsePayload, int responseCode) throws IOException, JSONException {
         test(missingHeaderRequestSpec, requestBody, expectedResponsePayload, responseCode);
     }
 
@@ -74,7 +74,7 @@ public class FunctionalTestUsingJSONAssert extends TestBase {
      * @throws IOException   when request or response file does not exist.
      * @throws JSONException this exception is thrown when either expected payload file or server response is not proper json.
      */
-    private void test(RequestSpecification requestSpecification, String requestBody, String expectedResponsePayload, int responseCode) throws Exception {
+    private void test(RequestSpecification requestSpecification, String requestBody, String expectedResponsePayload, int responseCode) throws IOException, JSONException {
         String requestPayload = readPayloadFromFile(Constants.FUNCTIONAL_TEST_DATA_PATH + requestBody);
         Response response = given().spec(requestSpecification).body(requestPayload).post(Constants.Login_API).then()
                 .contentType(ContentType.JSON).statusCode(responseCode).extract().response();
