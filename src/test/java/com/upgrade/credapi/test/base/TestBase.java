@@ -75,12 +75,12 @@ public class TestBase {
      * @throws Exception throws exception when the file is not found.
      */
     protected String readPayloadFromFile(String fileName) throws Exception {
-        String payload;
-        try(InputStream inputStream = Thread.currentThread().getContextClassLoader().getResourceAsStream(fileName);){
-            payload = IOUtils.toString(inputStream);
-        } catch(NullPointerException exception) {
+        InputStream inputStream = Thread.currentThread().getContextClassLoader().getResourceAsStream(fileName);
+        if(inputStream==null){
             throw new Exception("file " + fileName + " do not exists.");
         }
+        String payload = IOUtils.toString(inputStream);
+        inputStream.close();
         return payload;
     }
 
