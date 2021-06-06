@@ -26,6 +26,7 @@ public class TestBase {
     protected static String environment;
     protected static Properties testProperties;
     protected static RequestSpecification credapiRequestSpec;
+    protected static RequestSpecification missingHeaderRequestSpec;
 
     /**
      * In this method we initialize all the required parameters that are
@@ -46,19 +47,26 @@ public class TestBase {
         testProperties = new Properties();
         InputStream resourceStream = TestBase.class.getResourceAsStream("/credapi-" + environment + ".properties");
         testProperties.load(resourceStream);
-        createRequestSpecifications();
+        credapiRequestSpec = createRequestSpecifications(true);
+        missingHeaderRequestSpec = createRequestSpecifications(false);
     }
 
     /**
      * create request specifications for API call in the tests.
      */
-    private void createRequestSpecifications() {
-        credapiRequestSpec = new RequestSpecBuilder()
+    private RequestSpecification createRequestSpecifications(boolean addHeaders) {
+        RequestSpecBuilder requestSpecBuilder = new RequestSpecBuilder()
                 .setBaseUri(testProperties.getProperty(Constants.CREDAPI_BASE_URI))
-                .addHeader(Constants.SOURCE_ID_HEADER, Constants.SOURCE_ID_HEADER_VALUE)
-                .addHeader(Constants.CORR_ID_HEADER, UUID.randomUUID().toString())
-                .setContentType(ContentType.JSON)
-                .build();
+                .setContentType(ContentType.JSON);
+
+        if (addHeaders) {
+            return requestSpecBuilder
+                    .addHeader(Constants.SOURCE_ID_HEADER, Constants.SOURCE_ID_HEADER_VALUE)
+                    .addHeader(Constants.CORR_ID_HEADER, UUID.randomUUID().toString())
+                    .build();
+        } else {
+            return requestSpecBuilder.build();
+        }
     }
 
     /**
@@ -73,6 +81,7 @@ public class TestBase {
 
     /**
      * Compare two JSONArray.
+     *
      * @param actualApiResponse
      * @param expectedApiResponse
      * @param jsonPath
@@ -82,7 +91,7 @@ public class TestBase {
         List<Map<String, String>> actualJSONArray = actualApiResponse.get(jsonPath);
         List<Map<String, String>> expectedJSONArray = expectedApiResponse.get(jsonPath);
         boolean jsonArrayComparison = actualJSONArray.get(0).equals(expectedJSONArray.get(0));
-        if(!jsonArrayComparison){
+        if (!jsonArrayComparison) {
             logger.info("actualJSON={}, expectedJSON={}", actualJSONArray.get(0), expectedJSONArray.get(0));
         }
         assertTrue(jsonArrayComparison, errorMessage);

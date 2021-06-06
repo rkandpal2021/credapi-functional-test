@@ -2,7 +2,6 @@ package com.upgrade.credapi.test.regression;
 
 import com.upgrade.credapi.test.base.Constants;
 import com.upgrade.credapi.test.base.TestBase;
-import io.restassured.builder.RequestSpecBuilder;
 import io.restassured.http.ContentType;
 import io.restassured.specification.RequestSpecification;
 import org.json.JSONException;
@@ -61,11 +60,7 @@ public class FunctionalTestWithoutJSONAssert extends TestBase {
      */
     @Test(dataProvider = "missingHeaderTestData")
     public void missingHeaderTest(String requestBody, String expectedResponsePayload, int responseCode) throws IOException, JSONException {
-        RequestSpecification requestSpecification = new RequestSpecBuilder()
-                .setBaseUri(testProperties.getProperty(Constants.CREDAPI_BASE_URI))
-                .setContentType(ContentType.JSON)
-                .build();
-        test(requestSpecification, requestBody, expectedResponsePayload, responseCode);
+        test(missingHeaderRequestSpec, requestBody, expectedResponsePayload, responseCode);
     }
 
     /**

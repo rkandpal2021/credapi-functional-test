@@ -30,6 +30,6 @@ Following test scenarios are automated -
 - Each environment has a specific property file. This file contains all the environment specific properties like Base URI.
 
 ### Parallel test execution -
-- Currently, two tests are getting parallelly execute. This can be changed by updating the "thread-count" in the testng-regression.xml.
+- Currently, two tests are getting executed parallelly. This can be changed by updating the "thread-count" in the testng-regression.xml.
 - We can also enable the parallel execution of data driven test by adding parallel=true to DataProvider.
 
