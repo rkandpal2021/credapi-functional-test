@@ -72,11 +72,16 @@ public class TestBase {
     /**
      * @param fileName
      * @return
-     * @throws IOException throws exception when the file is not found.
+     * @throws Exception throws exception when the file is not found.
      */
-    protected String readPayloadFromFile(String fileName) throws IOException {
-        InputStream inputStream = Thread.currentThread().getContextClassLoader().getResourceAsStream(fileName);
-        return IOUtils.toString(inputStream);
+    protected String readPayloadFromFile(String fileName) throws Exception {
+        String payload;
+        try(InputStream inputStream = Thread.currentThread().getContextClassLoader().getResourceAsStream(fileName);){
+            payload = IOUtils.toString(inputStream);
+        } catch(NullPointerException exception) {
+            throw new Exception("file " + fileName + " do not exists.");
+        }
+        return payload;
     }
 
     /**

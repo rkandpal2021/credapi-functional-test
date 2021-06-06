@@ -51,7 +51,7 @@ public class FunctionalTestWithoutJSONAssert extends TestBase {
      * - login attempt with a bad username(' or ''=').
      */
     @Test(dataProvider = "loginTestData")
-    public void testLogin(String requestBody, String expectedResponsePayload, int responseCode) throws IOException, JSONException {
+    public void testLogin(String requestBody, String expectedResponsePayload, int responseCode) throws Exception {
         test(credapiRequestSpec, requestBody, expectedResponsePayload, responseCode);
     }
 
@@ -59,7 +59,7 @@ public class FunctionalTestWithoutJSONAssert extends TestBase {
      * Login request without proper headers should get rejected. This test is to simulate this scenario.
      */
     @Test(dataProvider = "missingHeaderTestData")
-    public void missingHeaderTest(String requestBody, String expectedResponsePayload, int responseCode) throws IOException, JSONException {
+    public void missingHeaderTest(String requestBody, String expectedResponsePayload, int responseCode) throws Exception {
         test(missingHeaderRequestSpec, requestBody, expectedResponsePayload, responseCode);
     }
 
@@ -72,7 +72,7 @@ public class FunctionalTestWithoutJSONAssert extends TestBase {
      * @throws IOException   when request or response file does not exist.
      * @throws JSONException this exception is thrown when either expected payload file or server response is not proper json.
      */
-    private void test(RequestSpecification requestSpecification, String requestBody, String expectedResponsePayload, int responseCode) throws IOException, JSONException {
+    private void test(RequestSpecification requestSpecification, String requestBody, String expectedResponsePayload, int responseCode) throws Exception {
         String requestPayload = readPayloadFromFile(Constants.FUNCTIONAL_TEST_DATA_PATH + requestBody);
         JsonPath expectedApiResponse = new JsonPath(new File(Constants.FOLDER_PATH + expectedResponsePayload));
         //submit the request and assert the response.
