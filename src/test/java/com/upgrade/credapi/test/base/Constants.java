@@ -14,11 +14,7 @@ public interface Constants {
     String Login_API = "/api/brportorch/v2/login";
     String TIMESTAMP_FIELD_NAME = "timestamp";
     String ERROR = "error";
-    String CODE = "code";
-    String CODE_NAME = "codeName";
     String MESSAGE = "message";
-    String RETRYABLE = "retryable";
-    String TYPE = "type";
     String HTTP_STATUS = "httpStatus";
     String FIRST_NAME = "firstName";
     String USERID = "userId";
@@ -30,4 +26,6 @@ public interface Constants {
     String LOAN_APPLICATIONS_MISMATCH_ERROR = "loansApplications json array is not matching.";
     String LOAN_ACCOUNT_SUMMARY_ATO = "loanAccountSummaryAto";
     String LOAN_ACCOUNT_SUMMARY_ATO_MISMATCH_ERROR = "loanAccountSummaryAto json array is not matching.";
+    String GENERIC_FAILURE_MESSAGE = "Actual and expected Json are different";
+    String ROOT_ELEMENT_JSON_PATH = "$";
 }

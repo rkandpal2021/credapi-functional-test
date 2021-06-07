@@ -18,6 +18,7 @@ import java.util.Properties;
 import java.util.UUID;
 
 import static org.testng.Assert.assertTrue;
+import static org.testng.Assert.fail;
 
 /**
  * This base class holds all the test code to be used across testing various end points (scenarios).
@@ -96,11 +97,35 @@ public class TestBase {
     protected void assertJSONArray(JsonPath actualApiResponse, JsonPath expectedApiResponse, String jsonPath, String errorMessage) {
         List<Map<String, String>> actualJSONArray = actualApiResponse.get(jsonPath);
         List<Map<String, String>> expectedJSONArray = expectedApiResponse.get(jsonPath);
-        boolean jsonArrayComparison = actualJSONArray.get(0).equals(expectedJSONArray.get(0));
-        if (!jsonArrayComparison) {
-            logger.info("actualJSON={}, expectedJSON={}", actualJSONArray.get(0), expectedJSONArray.get(0));
+        if(actualJSONArray.size()!=expectedJSONArray.size()){
+            logger.info("actualJSONArray={}, expectedJSONArray={}", actualJSONArray, expectedJSONArray);
+            fail(errorMessage);
         }
-        assertTrue(jsonArrayComparison, errorMessage);
+        for(int i=0; i<actualJSONArray.size(); i++) {
+            boolean jsonArrayComparison = actualJSONArray.get(i).equals(expectedJSONArray.get(i));
+            if (!jsonArrayComparison) {
+                logger.info("actualJSON={}, expectedJSON={}", actualJSONArray.get(i), expectedJSONArray.get(i));
+            }
+            assertTrue(jsonArrayComparison, errorMessage);
+        }
+    }
+
+    /**
+     * Compare two maps.
+     *
+     * @param actualApiResponse
+     * @param expectedApiResponse
+     * @param jsonPath
+     * @param errorMessage
+     */
+    protected void assertMap(JsonPath actualApiResponse, JsonPath expectedApiResponse, String jsonPath, String errorMessage) {
+        Map<String, String> expectedMap = expectedApiResponse.getMap(jsonPath);
+        Map<String, String> actualMap = actualApiResponse.getMap(jsonPath);
+        boolean jsonComparison = actualMap.equals(expectedMap);
+        if (!jsonComparison) {
+            logger.info("actualJSON={}, expectedJSON={}", actualMap, expectedMap);
+        }
+        assertTrue(jsonComparison, errorMessage);
     }
 }
 

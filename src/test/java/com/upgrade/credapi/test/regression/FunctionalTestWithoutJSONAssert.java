@@ -13,6 +13,7 @@ import java.io.IOException;
 
 import static io.restassured.RestAssured.given;
 import static org.testng.Assert.assertEquals;
+
 import io.restassured.path.json.JsonPath;
 
 public class FunctionalTestWithoutJSONAssert extends TestBase {
@@ -66,6 +67,7 @@ public class FunctionalTestWithoutJSONAssert extends TestBase {
 
     /**
      * This method is called internally by functional test to submit a Login API request and validate it's response.
+     *
      * @param requestSpecification
      * @param requestBody
      * @param expectedResponsePayload
@@ -78,9 +80,9 @@ public class FunctionalTestWithoutJSONAssert extends TestBase {
         JsonPath expectedApiResponse = new JsonPath(new File(Constants.FOLDER_PATH + expectedResponsePayload));
         //submit the request and assert the response.
         JsonPath actualApiResponse = given().spec(requestSpecification).body(requestPayload).post(Constants.Login_API).then()
-                .contentType(ContentType.JSON).statusCode(responseCode).extract().body().jsonPath();;
+                .contentType(ContentType.JSON).statusCode(responseCode).extract().body().jsonPath();
         //assert the response
-        if(responseCode==200){
+        if (responseCode == 200) {
             assertEquals(actualApiResponse.getString(Constants.FIRST_NAME), expectedApiResponse.getString(Constants.FIRST_NAME));
             assertEquals(actualApiResponse.getString(Constants.USERID), expectedApiResponse.getString(Constants.USERID));
             assertEquals(actualApiResponse.getString(Constants.USER_UUID), expectedApiResponse.getString(Constants.USER_UUID));
@@ -88,15 +90,12 @@ public class FunctionalTestWithoutJSONAssert extends TestBase {
             assertJSONArray(actualApiResponse, expectedApiResponse, Constants.LOAN_APPLICATIONS, Constants.LOAN_APPLICATIONS_MISMATCH_ERROR);
             assertJSONArray(actualApiResponse, expectedApiResponse, Constants.LOANS_IN_REVIEW, Constants.LOANS_IN_REVIEW_MISMATCH_ERROR);
             assertJSONArray(actualApiResponse, expectedApiResponse, Constants.LOAN_ACCOUNT_SUMMARY_ATO, Constants.LOAN_ACCOUNT_SUMMARY_ATO_MISMATCH_ERROR);
-        }
-        else{
-            assertEquals(actualApiResponse.getString(Constants.CODE), expectedApiResponse.getString(Constants.CODE));
-            assertEquals(actualApiResponse.getString(Constants.CODE_NAME), expectedApiResponse.getString(Constants.CODE_NAME));
+        } else if (responseCode == 500) {
             assertEquals(actualApiResponse.getString(Constants.MESSAGE), expectedApiResponse.getString(Constants.MESSAGE));
             assertEquals(actualApiResponse.getString(Constants.ERROR), expectedApiResponse.getString(Constants.ERROR));
-            assertEquals(actualApiResponse.getString(Constants.RETRYABLE), expectedApiResponse.getString(Constants.RETRYABLE));
-            assertEquals(actualApiResponse.getString(Constants.TYPE), expectedApiResponse.getString(Constants.TYPE));
             assertEquals(actualApiResponse.getString(Constants.HTTP_STATUS), expectedApiResponse.getString(Constants.HTTP_STATUS));
+        } else {
+            assertMap(actualApiResponse, expectedApiResponse, Constants.ROOT_ELEMENT_JSON_PATH, Constants.GENERIC_FAILURE_MESSAGE);
         }
     }
 }
