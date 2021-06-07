@@ -26,6 +26,7 @@ public class FunctionalTestWithoutJSONAssert extends TestBase {
                 {"invalid-password-payload.json", "expected-response-payload-invalid-password.json", 401},
                 {"missing-username-payload.json", "expected-response-payload-missing-username.json", 400},
                 {"missing-password-payload.json", "expected-response-payload-missing-password.json", 400},
+                {"username-in-caps-payload.json", "expected-response-payload-invalid-username.json", 401},
                 {"multiple-username-payload.json", "expected-response-payload-multiple-username.json", 400},
                 {"bad-username-payload.json", "expected-response-payload-invalid-username.json", 403}
         };

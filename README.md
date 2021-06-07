@@ -3,14 +3,20 @@
 ## Test Scenarios -
 Following test scenarios are automated -
 - Valid login with correct username, password and recaptchaToken.
-- Valid login with only username and password.
+- Valid login with only username and password.  [I have assumed that recaptchaToken is an optional field, if this is not true then this is a bug.]
 - Login attempt with invalid username.
 - Login attempt with invalid password. 
 - Login attempt with missing username.
 - Login attempt with missing password. 
 - Login attempt with a payload containing multiple username.
+- Login request with correct username in caps.
 - Login attempt with a bad username(' or ''=').
 - Login request without proper headers.
+
+## Bugs found -
+Following two scenarios (user input) are not handled properly by Login API, thus these test cases are failing -
+- Login attempt with a payload containing multiple username.
+- Login attempt with a bad username(' or ''=').
 
 ## Test Execution -
 ### There are three ways in which you can execute the functional tests -
